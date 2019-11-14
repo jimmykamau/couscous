@@ -169,3 +169,21 @@ class ListInvoiceViewTests(APITestCase):
         self.assertLess(
             response.data[-1]['amount'], response.data[0]['amount']
         )
+
+        # Order by descending due date
+        response = self.client.get(
+            f"{self.url}due_date", format='json'
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertGreater(
+            response.data[-1]['due_date'], response.data[0]['due_date']
+        )
+
+        # Order by ascending due date
+        response = self.client.get(
+            f"{self.url}-due_date", format='json'
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertLess(
+            response.data[-1]['due_date'], response.data[0]['due_date']
+        )
