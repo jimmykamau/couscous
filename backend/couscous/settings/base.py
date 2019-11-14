@@ -16,6 +16,7 @@ import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 
 # Quick-start development settings - unsuitable for production
@@ -32,6 +33,9 @@ except AttributeError:
 
 ALLOWED_HOSTS = []
 
+ADMINS = [
+    ('John Doe', 'jdoe@example.com')
+]
 
 # Application definition
 
@@ -65,7 +69,7 @@ ROOT_URLCONF = 'couscous.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,6 +112,62 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} {levelname} {pathname}:{lineno} Exception:{exc_info} Message:{message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{asctime} {levelname} {pathname} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': LOGLEVEL,
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'verbose',
+            'filters': ['require_debug_false']
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': True
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'propagate': False
+        },
+        'couscous': {
+            'handlers': ['console', 'mail_admins'],
+            'level': LOGLEVEL,
+            'propagate': False
+        }
+    }
+}
 
 
 REST_FRAMEWORK = {
