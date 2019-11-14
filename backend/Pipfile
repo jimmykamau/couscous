@@ -14,6 +14,7 @@ djangorestframework = "*"
 django-rest-swagger = "*"
 factory-boy = "*"
 django-rest-framework-social-oauth2 = "*"
+django-localflavor = "*"
 
 [requires]
 python_version = "3.7"
