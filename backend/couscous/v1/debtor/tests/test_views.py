@@ -35,6 +35,13 @@ class ListDebtorViewTests(APITestCase):
             len(self.debtors),
             len(response.data)
         )
+        self.assertCountEqual(
+            [
+                'email', 'iban', 'open_invoices',
+                'paid_invoices', 'overdue_invoices'
+            ],
+            response.data[0]
+        )
     
     def test_cannot_view_other_user_debtors(self):
         other_admin = couscous_factories.UserFactory()
