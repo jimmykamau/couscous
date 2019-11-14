@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'social_django',
     'rest_framework_social_oauth2',
 
-    'couscous.v1.debtor'
+    'couscous.v1.debtor',
+    'couscous.v1.invoice'
 ]
 
 MIDDLEWARE = [
