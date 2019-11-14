@@ -15,3 +15,4 @@ class UserFactory(factory.DjangoModelFactory):
     password = factory.PostGenerationMethodCall(
         'set_password', 'password'
     )
+    is_staff = True
