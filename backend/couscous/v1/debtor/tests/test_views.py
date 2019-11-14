@@ -1,6 +1,9 @@
+import random
+
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
+import couscous.v1.invoice.tests.factories as invoice_factories
 import couscous.v1.tests.factories as couscous_factories
 from couscous.v1.debtor import logger
 
@@ -13,6 +16,9 @@ class ListDebtorViewTests(APITestCase):
         self.admin_user = couscous_factories.UserFactory()
         self.client.force_authenticate(user=self.admin_user)
         self.debtors = DebtorFactory.create_batch(3, created_by=self.admin_user)
+        self.invoices = invoice_factories.InvoiceFactory.create_batch(
+            3, debtor=self.debtors[1]
+        )
         self.url = reverse('v1:list-debtors')
     
     def tearDown(self):
@@ -51,3 +57,21 @@ class ListDebtorViewTests(APITestCase):
         )
         self.assertEqual(200, response.status_code)
         self.assertFalse(response.data)
+    
+    def test_filter_results(self):
+        #  Filter by invoice status
+        status = random.choice(
+            [
+                ("OP", "open_invoices"),
+                ("PA", "paid_invoices"),
+                ("OV", "overdue_invoices")
+            ]
+        )
+        url = f"{self.url}?status={status[0]}"
+        response = self.client.get(url, format='json')
+        self.assertEqual(200, response.status_code)
+        for debtor in response.data:
+            self.assertLess(
+                0,
+                debtor[status[1]]
+            )
