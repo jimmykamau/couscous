@@ -75,3 +75,13 @@ class ListDebtorViewTests(APITestCase):
                 0,
                 debtor[status[1]]
             )
+    
+        # Filter by invoice count
+        other_invoices = invoice_factories.InvoiceFactory.create_batch(
+            2, debtor=self.debtors[0]
+        )
+        url = f"{self.url}?invoice_count={len(other_invoices)}"
+        response = self.client.get(url, format='json')
+        self.assertEqual(200, response.status_code)
+        random_result = random.choice(response.data)
+        self.assertEqual(other_invoices[0].debtor.email, random_result['email'])
