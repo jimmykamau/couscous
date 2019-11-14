@@ -111,3 +111,25 @@ class ListInvoiceViewTests(APITestCase):
         self.assertEqual(200, response.status_code)
         for invoice in response.data:
             self.assertEqual(due_date, invoice['due_date'])
+    
+    def test_order_results(self):
+        other_debtor_invoices = InvoiceFactory.create_batch(2, debtor=self.debtors[1])
+        self.url = f"{self.url}?ordering="
+
+        # Order by descending debtor email
+        response = self.client.get(
+            f"{self.url}debtor__email", format='json'
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertGreater(
+            response.data[-1]['email'], response.data[0]['email']
+        )
+
+        # Order by ascending debtor email
+        response = self.client.get(
+            f"{self.url}-debtor__email", format='json'
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertLess(
+            response.data[-1]['email'], response.data[0]['email']
+        )
