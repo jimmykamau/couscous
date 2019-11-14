@@ -151,3 +151,21 @@ class ListInvoiceViewTests(APITestCase):
         self.assertLess(
             response.data[-1]['status'], response.data[0]['status']
         )
+
+        # Order by descending amount
+        response = self.client.get(
+            f"{self.url}amount", format='json'
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertGreater(
+            response.data[-1]['amount'], response.data[0]['amount']
+        )
+
+        # Order by ascending amount
+        response = self.client.get(
+            f"{self.url}-amount", format='json'
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertLess(
+            response.data[-1]['amount'], response.data[0]['amount']
+        )
