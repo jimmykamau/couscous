@@ -6,7 +6,8 @@ from .models import Debtor
 class DebtorAdmin(admin.ModelAdmin):
     exclude = ['created_by']
     list_display = (
-        'email',
+        'email', 'open_invoices', 'paid_invoices',
+        'overdue_invoices'
     )
 
     def get_queryset(self, request):
