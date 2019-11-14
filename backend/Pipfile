@@ -10,6 +10,9 @@ django = "*"
 dj-database-url = "*"
 psycopg2 = "*"
 gunicorn = "*"
+djangorestframework = "*"
+django-rest-swagger = "*"
+factory-boy = "*"
 
 [requires]
 python_version = "3.7"
