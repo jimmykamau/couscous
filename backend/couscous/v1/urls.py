@@ -5,5 +5,6 @@ app_name = 'v1'
 schema_view = get_swagger_view(title='Couscous')
 
 urlpatterns = [
-    path('', schema_view)
+    path('', schema_view),
+    path('debtor/', include('couscous.v1.debtor.urls'))
 ]
