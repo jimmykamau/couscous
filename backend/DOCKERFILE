@@ -1,0 +1,10 @@
+FROM python:3.7
+
+WORKDIR /usr/src/backend
+
+RUN pip install --upgrade pip
+RUN pip install pipenv
+
+COPY . ./
+
+RUN pipenv install --dev --deploy --system --ignore-pipfile
