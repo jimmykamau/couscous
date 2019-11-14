@@ -1,0 +1,6 @@
+{% extends "admin/login.html" %}
+{% load i18n %}
+{% block content %}
+{{ block.super }}
+<a href="{% url "social:begin" "google-oauth2" %}?next={{ request.path }}">Sign in with Google</a>
+{% endblock content %}
