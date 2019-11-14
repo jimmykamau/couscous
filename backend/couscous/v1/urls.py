@@ -6,5 +6,6 @@ schema_view = get_swagger_view(title='Couscous')
 
 urlpatterns = [
     path('', schema_view),
-    path('debtor/', include('couscous.v1.debtor.urls'))
+    path('debtor/', include('couscous.v1.debtor.urls')),
+    path('invoice/', include('couscous.v1.invoice.urls'))
 ]
