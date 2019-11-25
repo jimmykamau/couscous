@@ -14,17 +14,5 @@ class Debtor(models.Model):
     email = models.EmailField(_('email address'), unique=True)
     iban = IBANField()
 
-    @property
-    def open_invoices(self):
-        return len(self.debtor_invoice.filter(status='OP'))
-    
-    @property
-    def paid_invoices(self):
-        return len(self.debtor_invoice.filter(status='PA'))
-    
-    @property
-    def overdue_invoices(self):
-        return len(self.debtor_invoice.filter(status='OV'))
-
     def __str__(self):
         return f"{self.first_name} {self.last_name}: {self.iban}"
