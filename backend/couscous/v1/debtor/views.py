@@ -1,3 +1,4 @@
+from django.db.models import Count, Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions
 
@@ -17,4 +18,20 @@ class ListDebtorView(generics.ListAPIView):
     filterset_class = debtor_filtersets.DebtorFilter
 
     def get_queryset(self):
-        return self.queryset.filter(created_by=self.request.user)
+        return self.queryset.filter(created_by=self.request.user).annotate(
+            open_invoices=Count(
+                'debtor_invoice', filter=Q(
+                    debtor_invoice__status='OP'
+                )
+            ),
+            paid_invoices=Count(
+                'debtor_invoice', filter=Q(
+                    debtor_invoice__status='PA'
+                )
+            ),
+            overdue_invoices=Count(
+                'debtor_invoice', filter=Q(
+                    debtor_invoice__status='OV'
+                )
+            )
+        )
