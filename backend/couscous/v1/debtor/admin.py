@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.db.models import Count, Q
 
 from .models import Debtor
 
@@ -12,23 +11,7 @@ class DebtorAdmin(admin.ModelAdmin):
     )
 
     def get_queryset(self, request):
-        qs = super().get_queryset(request).annotate(
-            open_invoices=Count(
-                'debtor_invoice', filter=Q(
-                    debtor_invoice__status='OP'
-                )
-            ),
-            paid_invoices=Count(
-                'debtor_invoice', filter=Q(
-                    debtor_invoice__status='PA'
-                )
-            ),
-            overdue_invoices=Count(
-                'debtor_invoice', filter=Q(
-                    debtor_invoice__status='OV'
-                )
-            )
-        )
+        qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
         return qs.filter(created_by=request.user)
