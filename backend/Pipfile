@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+django = "*"
+dj-database-url = "*"
+psycopg2 = "*"
+gunicorn = "*"
+djangorestframework = "*"
+django-rest-swagger = "*"
+factory-boy = "*"
+django-rest-framework-social-oauth2 = "*"
+django-localflavor = "*"
+django-filter = "*"
+
+[requires]
+python_version = "3.7"
