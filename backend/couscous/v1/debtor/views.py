@@ -12,7 +12,7 @@ class ListDebtorView(generics.ListAPIView):
     """
     permission_classes = (permissions.IsAdminUser,)
     serializer_class = debtor_serializers.DebtorSerializer
-    queryset = debtor_models.Debtor.objects.all()
+    queryset = debtor_models.Debtor.invoice_count_objects.all()
     filter_backends = (DjangoFilterBackend,)
     filterset_class = debtor_filtersets.DebtorFilter
 

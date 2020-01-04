@@ -27,6 +27,15 @@ class DebtorAdmin(admin.ModelAdmin):
             return True
         return False
 
+    def open_invoices(self, obj):
+        return obj.open_invoices
+    
+    def paid_invoices(self, obj):
+        return obj.paid_invoices
+    
+    def overdue_invoices(self, obj):
+        return obj.overdue_invoices
+
     has_delete_permission = has_change_permission
 
 
